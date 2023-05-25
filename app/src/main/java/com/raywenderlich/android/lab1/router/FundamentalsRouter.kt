@@ -1,30 +1,54 @@
-package com.raywenderlich.android.lab1.router
+package com.raywenderlich.android.lab1.screens
 
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
 
-/**
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import com.raywenderlich.android.lab1.R
+import com.raywenderlich.android.lab1.router.FundamentalsRouter
+import com.raywenderlich.android.lab1.router.Screen
 
-Класс, определяющий экраны, которые есть в нашем приложении.*
-Эти объекты должны соответствовать файлам, которые есть в пакете screens
- */
-sealed class Screen {
-    object Navigation : Screen()
-    object AlertDialog : Screen()
-    object Text : Screen()
-    object TextField : Screen()
-    object Buttons : Screen()
-    object ProgressIndicator : Screen()
-    object Scrolling : Screen()
-    object List : Screen()
-    object Grid : Screen()
+@Composable
+fun NavigationScreen() {
+    Surface(
+        color = Color.White,
+        modifier = Modifier.fillMaxSize()
+    ) {
+        Column(
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
 
+            NavigationButton(stringResource(id = R.string.scrolling), Screen.Scrolling)
+            NavigationButton(stringResource(id = R.string.list), Screen.List)
+            NavigationButton(stringResource(id = R.string.grid), Screen.Grid)
+        }
+    }
 }
 
-object FundamentalsRouter {
-    var currentScreen: MutableState<Screen> = mutableStateOf(Screen.Navigation)
-
-    fun navigateTo(destination: Screen) {
-        currentScreen.value = destination
+@Composable
+fun NavigationButton(text: String, screen: Screen) {
+    Button(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 16.dp, end = 16.dp, top = 16.dp),
+        shape = RoundedCornerShape(4.dp),
+        colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(id = R.color.blue)),
+        onClick = { FundamentalsRouter.navigateTo(screen) }
+    ) {
+        Text(
+            text = text,
+            color = Color.White
+        )
     }
 }
